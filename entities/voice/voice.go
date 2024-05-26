@@ -2,8 +2,8 @@ package voice
 
 import (
 	"bufio"
+	"final/entities/voice/voicemodels"
 	"final/logger"
-	"final/voice/voicemodels"
 	"os"
 	"strconv"
 	"strings"

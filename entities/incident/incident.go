@@ -2,7 +2,7 @@ package incident
 
 import (
 	"encoding/json"
-	"final/incident/incidentmodels"
+	"final/entities/incident/incidentmodels"
 	"final/logger"
 	"io"
 	"net/http"

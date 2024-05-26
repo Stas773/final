@@ -1,12 +1,12 @@
 package resultsetmodels
 
 import (
-	"final/billing/billingmodels"
-	"final/email/emailmodels"
-	"final/incident/incidentmodels"
-	"final/mms/mmsmodels"
-	"final/sms/smsmodels"
-	"final/voice/voicemodels"
+	"final/entities/billing/billingmodels"
+	"final/entities/email/emailmodels"
+	"final/entities/incident/incidentmodels"
+	"final/entities/mms/mmsmodels"
+	"final/entities/sms/smsmodels"
+	"final/entities/voice/voicemodels"
 )
 
 type ResultSet struct {

@@ -2,7 +2,7 @@ package billing
 
 import (
 	"bufio"
-	"final/billing/billingmodels"
+	"final/entities/billing/billingmodels"
 	"final/logger"
 	"math"
 	"os"
