@@ -1,6 +1,6 @@
 package resultmodels
 
-import "final/entities/resultset/resultsetmodels"
+import "final/entities/resultsetmodels"
 
 type Result struct {
 	Status bool                      `json:"status"`

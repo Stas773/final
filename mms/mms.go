@@ -2,7 +2,7 @@ package mms
 
 import (
 	"encoding/json"
-	"final/entities/mms/mmsmodels"
+	"final/entities/mmsmodels"
 	"io"
 	"net/http"
 	"sort"

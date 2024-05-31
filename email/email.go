@@ -2,7 +2,7 @@ package email
 
 import (
 	"bufio"
-	"final/entities/email/emailmodels"
+	"final/entities/emailmodels"
 	"final/logger"
 	"os"
 	"sort"

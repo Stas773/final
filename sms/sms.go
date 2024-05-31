@@ -2,7 +2,7 @@ package sms
 
 import (
 	"bufio"
-	"final/entities/sms/smsmodels"
+	"final/entities/smsmodels"
 	"final/logger"
 	"os"
 	"sort"

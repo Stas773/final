@@ -1,12 +1,12 @@
 package usecase
 
 import (
-	"final/entities/billing/billingmodels"
-	"final/entities/email/emailmodels"
-	"final/entities/incident/incidentmodels"
-	"final/entities/mms/mmsmodels"
-	"final/entities/sms/smsmodels"
-	"final/entities/voice/voicemodels"
+	"final/entities/billingmodels"
+	"final/entities/emailmodels"
+	"final/entities/incidentmodels"
+	"final/entities/mmsmodels"
+	"final/entities/smsmodels"
+	"final/entities/voicemodels"
 )
 
 type SMSWork interface {

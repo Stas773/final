@@ -2,7 +2,7 @@ package support
 
 import (
 	"encoding/json"
-	"final/entities/support/supportmodels"
+	"final/entities/supportmodels"
 	"final/logger"
 	"io"
 	"math"
