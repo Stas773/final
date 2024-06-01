@@ -1,4 +1,4 @@
-package smsmodels
+package entities
 
 type SMSData struct {
 	Country      string `json:"country"`

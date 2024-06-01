@@ -2,7 +2,7 @@ package incident
 
 import (
 	"encoding/json"
-	"final/entities/incidentmodels"
+	"final/entities"
 	"final/logger"
 	"io"
 	"net/http"
@@ -12,8 +12,8 @@ import (
 type IncidentStract struct {
 }
 
-func (is *IncidentStract) IncidentReader() ([]incidentmodels.IncidentData, error) {
-	var result []incidentmodels.IncidentData
+func (is *IncidentStract) IncidentReader() ([]entities.IncidentData, error) {
+	var result []entities.IncidentData
 	resp, err := http.Get("http://127.0.0.1:8383/accendent")
 	if err != nil {
 		return nil, err

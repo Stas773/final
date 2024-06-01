@@ -2,7 +2,7 @@ package support
 
 import (
 	"encoding/json"
-	"final/entities/supportmodels"
+	"final/entities"
 	"final/logger"
 	"io"
 	"math"
@@ -13,7 +13,7 @@ type SupportStract struct {
 }
 
 func (ms *SupportStract) SupportReader() ([]int, error) {
-	var supportData []supportmodels.SupportData
+	var supportData []entities.SupportData
 	resp, err := http.Get("http://127.0.0.1:8383/support")
 	if err != nil {
 		return nil, err

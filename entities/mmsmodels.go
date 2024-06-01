@@ -1,4 +1,4 @@
-package mmsmodels
+package entities
 
 type MMSData struct {
 	Country      string `json:"country"`

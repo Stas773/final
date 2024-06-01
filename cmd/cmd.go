@@ -5,14 +5,7 @@ import (
 	"encoding/json"
 	"final/billing"
 	"final/email"
-	"final/entities/billingmodels"
-	"final/entities/emailmodels"
-	"final/entities/incidentmodels"
-	"final/entities/mmsmodels"
-	"final/entities/resultmodels"
-	"final/entities/resultsetmodels"
-	"final/entities/smsmodels"
-	"final/entities/voicemodels"
+	"final/entities"
 	"final/incident"
 	"final/logger"
 	"final/mms"
@@ -37,13 +30,13 @@ var (
 	BillingHandler  usecase.BillingWork  = &billing.BillingStruct{}
 	SupportHandler  usecase.SupportWork  = &support.SupportStract{}
 	IncidenrHandler usecase.IncidentWork = &incident.IncidentStract{}
-	SMSResult       [][]smsmodels.SMSData
-	MMSResult       [][]mmsmodels.MMSData
-	VoiceResult     []voicemodels.VoiceData
-	EmailResult     map[string][][]emailmodels.EmailData
-	BillingResult   billingmodels.BillingData
+	SMSResult       [][]entities.SMSData
+	MMSResult       [][]entities.MMSData
+	VoiceResult     []entities.VoiceData
+	EmailResult     map[string][][]entities.EmailData
+	BillingResult   entities.BillingData
 	SupportResult   []int
-	IncidentResult  []incidentmodels.IncidentData
+	IncidentResult  []entities.IncidentData
 	ResultAll       []byte
 	wg              sync.WaitGroup
 )
@@ -118,12 +111,12 @@ func main() {
 	logger.Logger.Info("Server stoped")
 }
 
-func SMSReader() [][]smsmodels.SMSData {
+func SMSReader() [][]entities.SMSData {
 	logger.Logger.Info("SMS file are contain:", SMSHandler.SMSReader())
 	return SMSHandler.SMSReader()
 }
 
-func MMSReader() [][]mmsmodels.MMSData {
+func MMSReader() [][]entities.MMSData {
 	data, err := MMSHandler.MMSReader()
 	if err != nil {
 		logger.Logger.Error(err)
@@ -136,17 +129,17 @@ func MMSReader() [][]mmsmodels.MMSData {
 	return data
 }
 
-func EmailReader() map[string][][]emailmodels.EmailData {
+func EmailReader() map[string][][]entities.EmailData {
 	logger.Logger.Info("Email file are contain:", EmailHandler.EmailReader())
 	return EmailHandler.EmailReader()
 }
 
-func VoiceReader() []voicemodels.VoiceData {
+func VoiceReader() []entities.VoiceData {
 	logger.Logger.Info("Voice file are contain:", VoiceHandler.VoiceReader())
 	return VoiceHandler.VoiceReader()
 }
 
-func BillingReader() billingmodels.BillingData {
+func BillingReader() entities.BillingData {
 	logger.Logger.Info("Billing file are contain:", BillingHandler.BillingReader())
 	return BillingHandler.BillingReader()
 }
@@ -164,7 +157,7 @@ func SupportReader() []int {
 	return data
 }
 
-func IncidentReader() []incidentmodels.IncidentData {
+func IncidentReader() []entities.IncidentData {
 	data, err := IncidenrHandler.IncidentReader()
 	if err != nil {
 		logger.Logger.Error(err)
@@ -184,7 +177,7 @@ func HandleConnection(w http.ResponseWriter, r *http.Request) {
 }
 
 func ResultReader() []byte {
-	resultSet := resultsetmodels.ResultSet{
+	resultSet := entities.ResultSet{
 		SMS:       SMSResult,
 		MMS:       MMSResult,
 		VoiceCall: VoiceResult,
@@ -194,7 +187,7 @@ func ResultReader() []byte {
 		Incidents: IncidentResult,
 	}
 
-	var result resultmodels.Result
+	var result entities.Result
 	if resultSet.SMS == nil || resultSet.MMS == nil || resultSet.VoiceCall == nil || resultSet.Email == nil || resultSet.Support == nil || resultSet.Incidents == nil {
 		result.Status = false
 		result.Error = "Error on collect data"
