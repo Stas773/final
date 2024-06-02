@@ -1,4 +1,4 @@
-package voicemodels
+package entities
 
 type VoiceData struct {
 	Country             string  `json:"country"`

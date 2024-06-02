@@ -1,4 +1,4 @@
-package billingmodels
+package entities
 
 type BillingData struct {
 	CreateCustomer bool `json:"create_customer"`

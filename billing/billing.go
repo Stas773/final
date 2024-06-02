@@ -2,7 +2,7 @@ package billing
 
 import (
 	"bufio"
-	"final/billing/billingmodels"
+	"final/entities"
 	"final/logger"
 	"math"
 	"os"
@@ -12,8 +12,8 @@ import (
 type BillingStruct struct {
 }
 
-func (bs *BillingStruct) BillingReader() billingmodels.BillingData {
-	var dataStructs billingmodels.BillingData
+func (bs *BillingStruct) BillingReader() entities.BillingData {
+	var dataStructs entities.BillingData
 	var sum uint8
 
 	file, err := os.Open("simulator/billing.data")

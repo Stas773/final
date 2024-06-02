@@ -1,4 +1,4 @@
-package incidentmodels
+package entities
 
 type IncidentData struct {
 	Topic  string `json:"topic"`

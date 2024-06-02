@@ -1,4 +1,4 @@
-package supportmodels
+package entities
 
 type SupportData struct {
 	Topic         string `json:"topic"`

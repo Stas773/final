@@ -2,8 +2,8 @@ package voice
 
 import (
 	"bufio"
+	"final/entities"
 	"final/logger"
-	"final/voice/voicemodels"
 	"os"
 	"strconv"
 	"strings"
@@ -20,10 +20,10 @@ const (
 type VoiceStruct struct {
 }
 
-func (vs *VoiceStruct) VoiceReader() []voicemodels.VoiceData {
-	var dataStructs []voicemodels.VoiceData
+func (vs *VoiceStruct) VoiceReader() []entities.VoiceData {
+	var dataStructs []entities.VoiceData
 	var data []string
-	var voiceData voicemodels.VoiceData
+	var voiceData entities.VoiceData
 
 	file, err := os.Open("simulator/voice.data")
 	if err != nil {
