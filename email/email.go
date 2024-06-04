@@ -2,7 +2,7 @@ package email
 
 import (
 	"bufio"
-	"final/email/emailmodels"
+	"final/entities"
 	"final/logger"
 	"os"
 	"sort"
@@ -31,11 +31,11 @@ const (
 type EmailStruct struct {
 }
 
-func (es *EmailStruct) EmailReader() map[string][][]emailmodels.EmailData {
-	var dataStructs []emailmodels.EmailData
+func (es *EmailStruct) EmailReader() map[string][][]entities.EmailData {
+	var dataStructs []entities.EmailData
 	var data []string
-	var emailData emailmodels.EmailData
-	emailMap := make(map[string][][]emailmodels.EmailData)
+	var emailData entities.EmailData
+	emailMap := make(map[string][][]entities.EmailData)
 
 	file, err := os.Open("simulator/email.data")
 	if err != nil {
@@ -67,7 +67,7 @@ func (es *EmailStruct) EmailReader() map[string][][]emailmodels.EmailData {
 		}
 	}
 
-	grouped := make(map[string][]emailmodels.EmailData)
+	grouped := make(map[string][]entities.EmailData)
 	for _, d := range dataStructs {
 		grouped[d.Country] = append(grouped[d.Country], d)
 	}
@@ -79,7 +79,7 @@ func (es *EmailStruct) EmailReader() map[string][][]emailmodels.EmailData {
 		fastest := emails[:3]
 		slowest := emails[len(emails)-3:]
 
-		emailMap[country] = [][]emailmodels.EmailData{fastest, slowest}
+		emailMap[country] = [][]entities.EmailData{fastest, slowest}
 	}
 	return emailMap
 }

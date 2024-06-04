@@ -2,7 +2,7 @@ package mms
 
 import (
 	"encoding/json"
-	"final/mms/mmsmodels"
+	"final/entities"
 	"io"
 	"net/http"
 	"sort"
@@ -13,8 +13,8 @@ import (
 type MMSStract struct {
 }
 
-func (ms *MMSStract) MMSReader() ([][]mmsmodels.MMSData, error) {
-	var result []mmsmodels.MMSData
+func (ms *MMSStract) MMSReader() ([][]entities.MMSData, error) {
+	var result []entities.MMSData
 	resp, err := http.Get("http://127.0.0.1:8383/mms")
 	if err != nil {
 		return nil, err
@@ -31,8 +31,8 @@ func (ms *MMSStract) MMSReader() ([][]mmsmodels.MMSData, error) {
 	}
 	filteredData := filterInvalidData(result)
 
-	var sortedByCountry []mmsmodels.MMSData
-	var sortedByProvider []mmsmodels.MMSData
+	var sortedByCountry []entities.MMSData
+	var sortedByProvider []entities.MMSData
 
 	sortedByCountry = append(sortedByCountry, filteredData...)
 	sort.Slice(sortedByCountry, func(i, j int) bool {
@@ -44,14 +44,14 @@ func (ms *MMSStract) MMSReader() ([][]mmsmodels.MMSData, error) {
 		return sortedByProvider[i].Provider < sortedByProvider[j].Provider
 	})
 
-	var sortedData [][]mmsmodels.MMSData
+	var sortedData [][]entities.MMSData
 	sortedData = append(sortedData, sortedByCountry)
 	sortedData = append(sortedData, sortedByProvider)
 
 	return sortedData, nil
 }
 
-func filterInvalidData(data []mmsmodels.MMSData) []mmsmodels.MMSData {
+func filterInvalidData(data []entities.MMSData) []entities.MMSData {
 	validCountries := make(map[string]bool)
 	for _, country := range countries.All() {
 		validCountries[country.Alpha2()] = true
@@ -63,7 +63,7 @@ func filterInvalidData(data []mmsmodels.MMSData) []mmsmodels.MMSData {
 		"Kildy":  true,
 	}
 
-	var result []mmsmodels.MMSData
+	var result []entities.MMSData
 	for _, v := range data {
 		if validCountries[v.Country] && validProviders[v.Provider] {
 			all := countries.ByName(v.Country)

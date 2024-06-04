@@ -1,4 +1,4 @@
-package emailmodels
+package entities
 
 type EmailData struct {
 	Country      string `json:"country"`

@@ -2,8 +2,8 @@ package sms
 
 import (
 	"bufio"
+	"final/entities"
 	"final/logger"
-	"final/sms/smsmodels"
 	"os"
 	"sort"
 	"strings"
@@ -20,10 +20,10 @@ const (
 type SMSStruct struct {
 }
 
-func (ss *SMSStruct) SMSReader() [][]smsmodels.SMSData {
-	var dataStructs []smsmodels.SMSData
+func (ss *SMSStruct) SMSReader() [][]entities.SMSData {
+	var dataStructs []entities.SMSData
 	var data []string
-	var smsData smsmodels.SMSData
+	var smsData entities.SMSData
 
 	file, err := os.Open("simulator/sms.data")
 	if err != nil {
@@ -53,8 +53,8 @@ func (ss *SMSStruct) SMSReader() [][]smsmodels.SMSData {
 			}
 		}
 	}
-	var sortedByCountry []smsmodels.SMSData
-	var sortedByProvider []smsmodels.SMSData
+	var sortedByCountry []entities.SMSData
+	var sortedByProvider []entities.SMSData
 
 	sortedByCountry = append(sortedByCountry, dataStructs...)
 	sort.Slice(sortedByCountry, func(i, j int) bool {
@@ -66,7 +66,7 @@ func (ss *SMSStruct) SMSReader() [][]smsmodels.SMSData {
 		return sortedByProvider[i].Provider < sortedByProvider[j].Provider
 	})
 
-	var sortedData [][]smsmodels.SMSData
+	var sortedData [][]entities.SMSData
 	sortedData = append(sortedData, sortedByCountry)
 	sortedData = append(sortedData, sortedByProvider)
 	return sortedData
