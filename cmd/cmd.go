@@ -3,16 +3,10 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"final/billing"
-	"final/email"
 	"final/entities"
-	"final/incident"
 	"final/logger"
-	"final/mms"
-	"final/sms"
-	"final/support"
+	"final/repository"
 	"final/usecase"
-	"final/voice"
 	"net/http"
 	"os"
 	"os/signal"
@@ -23,13 +17,13 @@ import (
 )
 
 var (
-	SMSHandler      usecase.SMSWork      = &sms.SMSStruct{}
-	MMSHandler      usecase.MMSWork      = &mms.MMSStract{}
-	VoiceHandler    usecase.VoiceWork    = &voice.VoiceStruct{}
-	EmailHandler    usecase.EmailWork    = &email.EmailStruct{}
-	BillingHandler  usecase.BillingWork  = &billing.BillingStruct{}
-	SupportHandler  usecase.SupportWork  = &support.SupportStract{}
-	IncidenrHandler usecase.IncidentWork = &incident.IncidentStract{}
+	SMSHandler      repository.SMSWork      = &usecase.BuilderStruct{}
+	MMSHandler      repository.MMSWork      = &usecase.BuilderStruct{}
+	VoiceHandler    repository.VoiceWork    = &usecase.BuilderStruct{}
+	EmailHandler    repository.EmailWork    = &usecase.BuilderStruct{}
+	BillingHandler  repository.BillingWork  = &usecase.BuilderStruct{}
+	SupportHandler  repository.SupportWork  = &usecase.BuilderStruct{}
+	IncidenrHandler repository.IncidentWork = &usecase.BuilderStruct{}
 	SMSResult       [][]entities.SMSData
 	MMSResult       [][]entities.MMSData
 	VoiceResult     []entities.VoiceData

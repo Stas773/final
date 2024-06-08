@@ -2,54 +2,41 @@ package usecase
 
 import (
 	"final/entities"
+	"final/repository"
 )
 
-type SMSWork interface {
-	SMSReader() [][]entities.SMSData
-}
-type MMSWork interface {
-	MMSReader() ([][]entities.MMSData, error)
-}
-type VoiceWork interface {
-	VoiceReader() []entities.VoiceData
-}
-type EmailWork interface {
-	EmailReader() map[string][][]entities.EmailData
-}
-type BillingWork interface {
-	BillingReader() entities.BillingData
-}
-type SupportWork interface {
-	SupportReader() ([]int, error)
-}
-type IncidentWork interface {
-	IncidentReader() ([]entities.IncidentData, error)
-}
-type ResultWork interface {
-	ResultReader() (string, error)
+type BuilderStruct struct {
+	interSMS      repository.SMSWork
+	interMMS      repository.MMSWork
+	interVoice    repository.VoiceWork
+	interEmail    repository.EmailWork
+	interBilling  repository.BillingWork
+	interSupport  repository.SupportWork
+	interIncident repository.IncidentWork
+	interResult   repository.ResultWork
 }
 
-func SMSReader(w SMSWork) [][]entities.SMSData {
-	return w.SMSReader()
+func (b *BuilderStruct) SMSReader() [][]entities.SMSData {
+	return b.interSMS.SMSReader()
 }
-func MMSReader(w MMSWork) ([][]entities.MMSData, error) {
-	return w.MMSReader()
+func (b *BuilderStruct) MMSReader() ([][]entities.MMSData, error) {
+	return b.interMMS.MMSReader()
 }
-func VoiceReader(w VoiceWork) []entities.VoiceData {
-	return w.VoiceReader()
+func (b *BuilderStruct) VoiceReader() []entities.VoiceData {
+	return b.interVoice.VoiceReader()
 }
-func EmailReader(w EmailWork) map[string][][]entities.EmailData {
-	return w.EmailReader()
+func (b *BuilderStruct) EmailReader() map[string][][]entities.EmailData {
+	return b.interEmail.EmailReader()
 }
-func BillingReader(w BillingWork) entities.BillingData {
-	return w.BillingReader()
+func (b *BuilderStruct) BillingReader() entities.BillingData {
+	return b.interBilling.BillingReader()
 }
-func SupportReader(w SupportWork) ([]int, error) {
-	return w.SupportReader()
+func (b *BuilderStruct) SupportReader() ([]int, error) {
+	return b.interSupport.SupportReader()
 }
-func IncidentReader(w IncidentWork) ([]entities.IncidentData, error) {
-	return w.IncidentReader()
+func (b *BuilderStruct) IncidentReader() ([]entities.IncidentData, error) {
+	return b.interIncident.IncidentReader()
 }
-func ResultReader(w ResultWork) (string, error) {
-	return w.ResultReader()
+func (b *BuilderStruct) ResultReader() (string, error) {
+	return b.interResult.ResultReader()
 }
