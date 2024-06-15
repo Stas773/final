@@ -2,18 +2,42 @@ package usecase
 
 import (
 	"final/entities"
-	"final/repository"
 )
 
 type BuilderStruct struct {
-	interSMS      repository.SMSWork
-	interMMS      repository.MMSWork
-	interVoice    repository.VoiceWork
-	interEmail    repository.EmailWork
-	interBilling  repository.BillingWork
-	interSupport  repository.SupportWork
-	interIncident repository.IncidentWork
-	interResult   repository.ResultWork
+	interSMS      SMSWork
+	interMMS      MMSWork
+	interVoice    VoiceWork
+	interEmail    EmailWork
+	interBilling  BillingWork
+	interSupport  SupportWork
+	interIncident IncidentWork
+	interResult   ResultWork
+}
+
+type SMSWork interface {
+	SMSReader() [][]entities.SMSData
+}
+type MMSWork interface {
+	MMSReader() ([][]entities.MMSData, error)
+}
+type VoiceWork interface {
+	VoiceReader() []entities.VoiceData
+}
+type EmailWork interface {
+	EmailReader() map[string][][]entities.EmailData
+}
+type BillingWork interface {
+	BillingReader() entities.BillingData
+}
+type SupportWork interface {
+	SupportReader() ([]int, error)
+}
+type IncidentWork interface {
+	IncidentReader() ([]entities.IncidentData, error)
+}
+type ResultWork interface {
+	ResultReader() (string, error)
 }
 
 func (b *BuilderStruct) SMSReader() [][]entities.SMSData {

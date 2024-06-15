@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"final/entities"
 	"final/logger"
-	"final/repository"
 	"final/usecase"
 	"net/http"
 	"os"
@@ -17,13 +16,13 @@ import (
 )
 
 var (
-	SMSHandler      repository.SMSWork      = &usecase.BuilderStruct{}
-	MMSHandler      repository.MMSWork      = &usecase.BuilderStruct{}
-	VoiceHandler    repository.VoiceWork    = &usecase.BuilderStruct{}
-	EmailHandler    repository.EmailWork    = &usecase.BuilderStruct{}
-	BillingHandler  repository.BillingWork  = &usecase.BuilderStruct{}
-	SupportHandler  repository.SupportWork  = &usecase.BuilderStruct{}
-	IncidenrHandler repository.IncidentWork = &usecase.BuilderStruct{}
+	SMSHandler      usecase.SMSWork      = &usecase.BuilderStruct{}
+	MMSHandler      usecase.MMSWork      = &usecase.BuilderStruct{}
+	VoiceHandler    usecase.VoiceWork    = &usecase.BuilderStruct{}
+	EmailHandler    usecase.EmailWork    = &usecase.BuilderStruct{}
+	BillingHandler  usecase.BillingWork  = &usecase.BuilderStruct{}
+	SupportHandler  usecase.SupportWork  = &usecase.BuilderStruct{}
+	IncidenrHandler usecase.IncidentWork = &usecase.BuilderStruct{}
 	SMSResult       [][]entities.SMSData
 	MMSResult       [][]entities.MMSData
 	VoiceResult     []entities.VoiceData
