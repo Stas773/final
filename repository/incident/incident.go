@@ -14,7 +14,7 @@ type IncidentStract struct {
 
 func (is *IncidentStract) IncidentReader() ([]entities.IncidentData, error) {
 	var result []entities.IncidentData
-	resp, err := http.Get("http://127.0.0.1:8383/accendent")
+	resp, err := http.Get(incidentURL)
 	if err != nil {
 		return nil, err
 	}

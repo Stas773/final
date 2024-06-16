@@ -15,7 +15,7 @@ type MMSStract struct {
 
 func (ms *MMSStract) MMSReader() ([][]entities.MMSData, error) {
 	var result []entities.MMSData
-	resp, err := http.Get("http://127.0.0.1:8383/mms")
+	resp, err := http.Get(mmsURL)
 	if err != nil {
 		return nil, err
 	}

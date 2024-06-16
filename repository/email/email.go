@@ -37,7 +37,7 @@ func (es *EmailStruct) EmailReader() map[string][][]entities.EmailData {
 	var emailData entities.EmailData
 	emailMap := make(map[string][][]entities.EmailData)
 
-	file, err := os.Open("simulator/email.data")
+	file, err := os.Open(fileName)
 	if err != nil {
 		logger.Logger.Panic(err)
 	}

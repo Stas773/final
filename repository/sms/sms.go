@@ -25,7 +25,7 @@ func (ss *SMSStruct) SMSReader() [][]entities.SMSData {
 	var data []string
 	var smsData entities.SMSData
 
-	file, err := os.Open("simulator/sms.data")
+	file, err := os.Open(fileName)
 	if err != nil {
 		logger.Logger.Panic(err)
 	}
