@@ -16,7 +16,7 @@ func (bs *BillingStruct) BillingReader() entities.BillingData {
 	var dataStructs entities.BillingData
 	var sum uint8
 
-	file, err := os.Open("simulator/billing.data")
+	file, err := os.Open(fileName)
 	if err != nil {
 		logger.Logger.Panic(err)
 	}

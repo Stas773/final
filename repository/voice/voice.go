@@ -25,7 +25,7 @@ func (vs *VoiceStruct) VoiceReader() []entities.VoiceData {
 	var data []string
 	var voiceData entities.VoiceData
 
-	file, err := os.Open("simulator/voice.data")
+	file, err := os.Open(fileName)
 	if err != nil {
 		logger.Logger.Panic(err)
 	}
