@@ -14,7 +14,7 @@ type SupportStract struct {
 
 func (ms *SupportStract) SupportReader() ([]int, error) {
 	var supportData []entities.SupportData
-	resp, err := http.Get("http://127.0.0.1:8383/support")
+	resp, err := http.Get(supportURL)
 	if err != nil {
 		return nil, err
 	}
