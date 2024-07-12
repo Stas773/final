@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"final/cmd/models"
 	"final/entities"
 	"final/logger"
 	"final/usecase"
@@ -170,7 +171,7 @@ func HandleConnection(w http.ResponseWriter, r *http.Request) {
 }
 
 func ResultReader() []byte {
-	resultSet := entities.ResultSet{
+	resultSet := models.ResultSet{
 		SMS:       SMSResult,
 		MMS:       MMSResult,
 		VoiceCall: VoiceResult,
@@ -180,7 +181,7 @@ func ResultReader() []byte {
 		Incidents: IncidentResult,
 	}
 
-	var result entities.Result
+	var result models.Result
 	if resultSet.SMS == nil || resultSet.MMS == nil || resultSet.VoiceCall == nil || resultSet.Email == nil || resultSet.Support == nil || resultSet.Incidents == nil {
 		result.Status = false
 		result.Error = "Error on collect data"
