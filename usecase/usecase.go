@@ -2,6 +2,8 @@ package usecase
 
 import (
 	"final/entities"
+
+	"github.com/sirupsen/logrus"
 )
 
 type BuilderStruct struct {
@@ -16,7 +18,7 @@ type BuilderStruct struct {
 }
 
 type SMSWork interface {
-	SMSReader() [][]entities.SMSData
+	SMSReader(l *logrus.Logger) [][]entities.SMSData
 }
 type MMSWork interface {
 	MMSReader() ([][]entities.MMSData, error)
@@ -40,8 +42,8 @@ type ResultWork interface {
 	ResultReader() (string, error)
 }
 
-func (b *BuilderStruct) SMSReader() [][]entities.SMSData {
-	return b.interSMS.SMSReader()
+func (b *BuilderStruct) SMSReader(l *logrus.Logger) [][]entities.SMSData {
+	return b.interSMS.SMSReader(l)
 }
 func (b *BuilderStruct) MMSReader() ([][]entities.MMSData, error) {
 	return b.interMMS.MMSReader()

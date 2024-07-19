@@ -5,15 +5,18 @@ import (
 	"encoding/json"
 	"final/cmd/models"
 	"final/entities"
-	"final/logger"
 	"final/usecase"
+	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
+	"path"
+	"runtime"
 	"sync"
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/sirupsen/logrus"
 )
 
 var (
@@ -33,11 +36,11 @@ var (
 	IncidentResult  []entities.IncidentData
 	ResultAll       []byte
 	wg              sync.WaitGroup
+	Logger          *logrus.Logger
 )
 
 func main() {
-	logger.NewLogger()
-
+	Logger := NewLogger()
 	done := make(chan os.Signal, 1)
 	signal.Notify(done, os.Interrupt)
 	router := mux.NewRouter()
@@ -49,18 +52,18 @@ func main() {
 
 	go func() {
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			logger.Logger.Info("Server don't started", err)
+			Logger.Info("Server don't started", err)
 			os.Exit(1)
 		}
 	}()
-	logger.Logger.Info("Server started on port:", server.Addr)
+	Logger.Info("Server started on port:", server.Addr)
 
 	go func() {
 		for {
 			wg.Add(7)
 			go func() {
 				defer wg.Done()
-				SMSResult = SMSReader()
+				SMSResult = SMSReader(Logger)
 			}()
 			go func() {
 				defer wg.Done()
@@ -94,73 +97,88 @@ func main() {
 	}()
 
 	<-done
-	logger.Logger.Info("Stop signal received")
+	Logger.Info("Stop signal received")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	if err := server.Shutdown(ctx); err != nil {
-		logger.Logger.Error("Shutdown error:", err)
+		Logger.Error("Shutdown error:", err)
 	}
-	logger.Logger.Info("Server stoped")
+	Logger.Info("Server stoped")
 }
 
-func SMSReader() [][]entities.SMSData {
-	logger.Logger.Info("SMS file are contain:", SMSHandler.SMSReader())
-	return SMSHandler.SMSReader()
+func NewLogger() *logrus.Logger {
+	Logger = logrus.New()
+	Logger.SetReportCaller(true)
+	Logger.SetFormatter(&logrus.TextFormatter{
+		CallerPrettyfier: func(f *runtime.Frame) (function string, file string) {
+			filename := path.Base(f.File)
+			return fmt.Sprintf("%s()", f.Function), fmt.Sprintf("%s:%d", filename, f.Line)
+		},
+		ForceColors:     true,
+		TimestampFormat: "2006-01-02 15:04:05",
+		FullTimestamp:   true,
+	})
+	return Logger
+}
+
+func SMSReader(l *logrus.Logger) [][]entities.SMSData {
+	l.Info("SMS file are contain:", SMSHandler.SMSReader(l))
+	return SMSHandler.SMSReader(l)
 }
 
 func MMSReader() [][]entities.MMSData {
 	data, err := MMSHandler.MMSReader()
 	if err != nil {
-		logger.Logger.Error(err)
+		Logger.Error(err)
 	}
 	if data == nil {
-		logger.Logger.Warn("MMS data is empty:", data)
+		Logger.Warn("MMS data is empty:", data)
 		return nil
 	}
-	logger.Logger.Info("MMS data are contain: ", data)
+	Logger.Info("MMS data are contain:", data)
 	return data
 }
 
 func EmailReader() map[string][][]entities.EmailData {
-	logger.Logger.Info("Email file are contain:", EmailHandler.EmailReader())
+	Logger.Info("Email file are contain:", EmailHandler.EmailReader())
 	return EmailHandler.EmailReader()
 }
 
 func VoiceReader() []entities.VoiceData {
-	logger.Logger.Info("Voice file are contain:", VoiceHandler.VoiceReader())
+	Logger.Info("Voice file are contain:", VoiceHandler.VoiceReader())
 	return VoiceHandler.VoiceReader()
 }
 
 func BillingReader() entities.BillingData {
-	logger.Logger.Info("Billing file are contain:", BillingHandler.BillingReader())
+	Logger.Info("Billing file are contain:", BillingHandler.BillingReader())
 	return BillingHandler.BillingReader()
 }
 
 func SupportReader() []int {
 	data, err := SupportHandler.SupportReader()
 	if err != nil {
-		logger.Logger.Error(err)
+		Logger.Error(err)
 	}
 	if data == nil {
-		logger.Logger.Warn("Support data is empty:", data)
+		Logger.Warn("Support data is empty:", data)
 		return nil
 	}
-	logger.Logger.Info("Support data are contain:", data)
+	Logger.Info("Support data are contain:", data)
 	return data
 }
 
 func IncidentReader() []entities.IncidentData {
 	data, err := IncidenrHandler.IncidentReader()
 	if err != nil {
-		logger.Logger.Error(err)
+		Logger.Error(err)
 	}
 	if data == nil {
-		logger.Logger.Warn("Incident data is empty:", data)
+		Logger.Warn("Incident data is empty:", data)
 		return nil
 	}
-	logger.Logger.Info("Incident data are contain:", data)
+	Logger.Info("Incident data are contain:", data)
 	return data
 }
 
@@ -193,9 +211,9 @@ func ResultReader() []byte {
 
 	jsonData, err := json.Marshal(&result)
 	if err != nil {
-		logger.Logger.Error("Error:", err)
+		Logger.Error("Error:", err)
 		return nil
 	}
-	logger.Logger.Info("Result:", string(jsonData))
+	Logger.Info("Result:", string(jsonData))
 	return jsonData
 }

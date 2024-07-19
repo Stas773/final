@@ -3,7 +3,7 @@ package billing
 import (
 	"bufio"
 	"final/entities"
-	"final/logger"
+	"final/main"
 	"math"
 	"os"
 	"strconv"
@@ -18,7 +18,7 @@ func (bs *BillingStruct) BillingReader() entities.BillingData {
 
 	file, err := os.Open(fileName)
 	if err != nil {
-		logger.Logger.Panic(err)
+		main.Logger.Panic(err)
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
