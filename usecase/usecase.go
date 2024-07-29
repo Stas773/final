@@ -21,48 +21,48 @@ type SMSWork interface {
 	SMSReader(l *logrus.Logger) [][]entities.SMSData
 }
 type MMSWork interface {
-	MMSReader() ([][]entities.MMSData, error)
+	MMSReader(l *logrus.Logger) ([][]entities.MMSData, error)
 }
 type VoiceWork interface {
-	VoiceReader() []entities.VoiceData
+	VoiceReader(l *logrus.Logger) []entities.VoiceData
 }
 type EmailWork interface {
-	EmailReader() map[string][][]entities.EmailData
+	EmailReader(l *logrus.Logger) map[string][][]entities.EmailData
 }
 type BillingWork interface {
-	BillingReader() entities.BillingData
+	BillingReader(l *logrus.Logger) entities.BillingData
 }
 type SupportWork interface {
-	SupportReader() ([]int, error)
+	SupportReader(l *logrus.Logger) ([]int, error)
 }
 type IncidentWork interface {
-	IncidentReader() ([]entities.IncidentData, error)
+	IncidentReader(l *logrus.Logger) ([]entities.IncidentData, error)
 }
 type ResultWork interface {
-	ResultReader() (string, error)
+	ResultReader(l *logrus.Logger) (string, error)
 }
 
 func (b *BuilderStruct) SMSReader(l *logrus.Logger) [][]entities.SMSData {
 	return b.interSMS.SMSReader(l)
 }
-func (b *BuilderStruct) MMSReader() ([][]entities.MMSData, error) {
-	return b.interMMS.MMSReader()
+func (b *BuilderStruct) MMSReader(l *logrus.Logger) ([][]entities.MMSData, error) {
+	return b.interMMS.MMSReader(l)
 }
-func (b *BuilderStruct) VoiceReader() []entities.VoiceData {
-	return b.interVoice.VoiceReader()
+func (b *BuilderStruct) VoiceReader(l *logrus.Logger) []entities.VoiceData {
+	return b.interVoice.VoiceReader(l)
 }
-func (b *BuilderStruct) EmailReader() map[string][][]entities.EmailData {
-	return b.interEmail.EmailReader()
+func (b *BuilderStruct) EmailReader(l *logrus.Logger) map[string][][]entities.EmailData {
+	return b.interEmail.EmailReader(l)
 }
-func (b *BuilderStruct) BillingReader() entities.BillingData {
-	return b.interBilling.BillingReader()
+func (b *BuilderStruct) BillingReader(l *logrus.Logger) entities.BillingData {
+	return b.interBilling.BillingReader(l)
 }
-func (b *BuilderStruct) SupportReader() ([]int, error) {
-	return b.interSupport.SupportReader()
+func (b *BuilderStruct) SupportReader(l *logrus.Logger) ([]int, error) {
+	return b.interSupport.SupportReader(l)
 }
-func (b *BuilderStruct) IncidentReader() ([]entities.IncidentData, error) {
-	return b.interIncident.IncidentReader()
+func (b *BuilderStruct) IncidentReader(l *logrus.Logger) ([]entities.IncidentData, error) {
+	return b.interIncident.IncidentReader(l)
 }
-func (b *BuilderStruct) ResultReader() (string, error) {
-	return b.interResult.ResultReader()
+func (b *BuilderStruct) ResultReader(l *logrus.Logger) (string, error) {
+	return b.interResult.ResultReader(l)
 }

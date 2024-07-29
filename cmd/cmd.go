@@ -67,27 +67,27 @@ func main() {
 			}()
 			go func() {
 				defer wg.Done()
-				MMSResult = MMSReader()
+				MMSResult = MMSReader(Logger)
 			}()
 			go func() {
 				defer wg.Done()
-				VoiceResult = VoiceReader()
+				VoiceResult = VoiceReader(Logger)
 			}()
 			go func() {
 				defer wg.Done()
-				EmailResult = EmailReader()
+				EmailResult = EmailReader(Logger)
 			}()
 			go func() {
 				defer wg.Done()
-				BillingResult = BillingReader()
+				BillingResult = BillingReader(Logger)
 			}()
 			go func() {
 				defer wg.Done()
-				SupportResult = SupportReader()
+				SupportResult = SupportReader(Logger)
 			}()
 			go func() {
 				defer wg.Done()
-				IncidentResult = IncidentReader()
+				IncidentResult = IncidentReader(Logger)
 			}()
 			wg.Wait()
 			ResultAll = ResultReader()
@@ -124,61 +124,65 @@ func NewLogger() *logrus.Logger {
 }
 
 func SMSReader(l *logrus.Logger) [][]entities.SMSData {
-	l.Info("SMS file are contain:", SMSHandler.SMSReader(l))
-	return SMSHandler.SMSReader(l)
-}
-
-func MMSReader() [][]entities.MMSData {
-	data, err := MMSHandler.MMSReader()
-	if err != nil {
-		Logger.Error(err)
-	}
-	if data == nil {
-		Logger.Warn("MMS data is empty:", data)
-		return nil
-	}
-	Logger.Info("MMS data are contain:", data)
+	data := SMSHandler.SMSReader(l)
+	l.Info("SMS file are contain:", data)
 	return data
 }
 
-func EmailReader() map[string][][]entities.EmailData {
-	Logger.Info("Email file are contain:", EmailHandler.EmailReader())
-	return EmailHandler.EmailReader()
-}
-
-func VoiceReader() []entities.VoiceData {
-	Logger.Info("Voice file are contain:", VoiceHandler.VoiceReader())
-	return VoiceHandler.VoiceReader()
-}
-
-func BillingReader() entities.BillingData {
-	Logger.Info("Billing file are contain:", BillingHandler.BillingReader())
-	return BillingHandler.BillingReader()
-}
-
-func SupportReader() []int {
-	data, err := SupportHandler.SupportReader()
+func MMSReader(l *logrus.Logger) [][]entities.MMSData {
+	data, err := MMSHandler.MMSReader(l)
 	if err != nil {
-		Logger.Error(err)
+		l.Error(err)
 	}
 	if data == nil {
-		Logger.Warn("Support data is empty:", data)
+		l.Warn("MMS data is empty:", data)
 		return nil
 	}
-	Logger.Info("Support data are contain:", data)
+	l.Info("MMS data are contain:", data)
 	return data
 }
 
-func IncidentReader() []entities.IncidentData {
-	data, err := IncidenrHandler.IncidentReader()
+func EmailReader(l *logrus.Logger) map[string][][]entities.EmailData {
+	data := EmailHandler.EmailReader(l)
+	l.Info("Email file are contain:", data)
+	return data
+}
+
+func VoiceReader(l *logrus.Logger) []entities.VoiceData {
+	data := VoiceHandler.VoiceReader(l)
+	l.Info("Voice file are contain:", data)
+	return data
+}
+
+func BillingReader(l *logrus.Logger) entities.BillingData {
+	data := BillingHandler.BillingReader(l)
+	l.Info("Billing file are contain:", data)
+	return data
+}
+
+func SupportReader(l *logrus.Logger) []int {
+	data, err := SupportHandler.SupportReader(l)
 	if err != nil {
-		Logger.Error(err)
+		l.Error(err)
 	}
 	if data == nil {
-		Logger.Warn("Incident data is empty:", data)
+		l.Warn("Support data is empty:", data)
 		return nil
 	}
-	Logger.Info("Incident data are contain:", data)
+	l.Info("Support data are contain:", data)
+	return data
+}
+
+func IncidentReader(l *logrus.Logger) []entities.IncidentData {
+	data, err := IncidenrHandler.IncidentReader(l)
+	if err != nil {
+		l.Error(err)
+	}
+	if data == nil {
+		l.Warn("Incident data is empty:", data)
+		return nil
+	}
+	l.Info("Incident data are contain:", data)
 	return data
 }
 

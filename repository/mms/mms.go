@@ -8,12 +8,13 @@ import (
 	"sort"
 
 	"github.com/biter777/countries"
+	"github.com/sirupsen/logrus"
 )
 
 type MMSStract struct {
 }
 
-func (ms *MMSStract) MMSReader() ([][]entities.MMSData, error) {
+func (ms *MMSStract) MMSReader(l *logrus.Logger) ([][]entities.MMSData, error) {
 	var result []entities.MMSData
 	resp, err := http.Get(mmsURL)
 	if err != nil {

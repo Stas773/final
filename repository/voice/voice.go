@@ -3,12 +3,12 @@ package voice
 import (
 	"bufio"
 	"final/entities"
-	"final/logger"
 	"os"
 	"strconv"
 	"strings"
 
 	"github.com/biter777/countries"
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -20,14 +20,14 @@ const (
 type VoiceStruct struct {
 }
 
-func (vs *VoiceStruct) VoiceReader() []entities.VoiceData {
+func (vs *VoiceStruct) VoiceReader(l *logrus.Logger) []entities.VoiceData {
 	var dataStructs []entities.VoiceData
 	var data []string
 	var voiceData entities.VoiceData
 
 	file, err := os.Open(fileName)
 	if err != nil {
-		logger.Logger.Panic(err)
+		l.Panic(err)
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
@@ -50,23 +50,23 @@ func (vs *VoiceStruct) VoiceReader() []entities.VoiceData {
 					case 4:
 						vFloat, err := strconv.ParseFloat(v, 32)
 						if err != nil {
-							logger.Logger.Error("can't convert string to float: ", err)
+							l.Error("can't convert string to float: ", err)
 						}
 						voiceData.ConnectionStability = float32(vFloat)
 					case 5:
 						voiceData.TTFB, err = strconv.Atoi(v)
 						if err != nil {
-							logger.Logger.Error("can't convert string to int: ", err)
+							l.Error("can't convert string to int: ", err)
 						}
 					case 6:
 						voiceData.VoicePurity, err = strconv.Atoi(v)
 						if err != nil {
-							logger.Logger.Error("can't convert string to int: ", err)
+							l.Error("can't convert string to int: ", err)
 						}
 					case 7:
 						voiceData.MedianOfCallsTime, err = strconv.Atoi(v)
 						if err != nil {
-							logger.Logger.Error("can't convert string to int: ", err)
+							l.Error("can't convert string to int: ", err)
 						}
 					}
 				}

@@ -3,22 +3,23 @@ package billing
 import (
 	"bufio"
 	"final/entities"
-	"final/main"
 	"math"
 	"os"
 	"strconv"
+
+	"github.com/sirupsen/logrus"
 )
 
 type BillingStruct struct {
 }
 
-func (bs *BillingStruct) BillingReader() entities.BillingData {
+func (bs *BillingStruct) BillingReader(l *logrus.Logger) entities.BillingData {
 	var dataStructs entities.BillingData
 	var sum uint8
 
 	file, err := os.Open(fileName)
 	if err != nil {
-		main.Logger.Panic(err)
+		l.Panic(err)
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
@@ -26,7 +27,7 @@ func (bs *BillingStruct) BillingReader() entities.BillingData {
 		line := scanner.Text()
 		lineInt, err := strconv.Atoi(line)
 		if err != nil {
-			logger.Logger.Error("can't convert string to int:", err)
+			l.Error("can't convert string to int:", err)
 		}
 		for i := 0; i < len(line); i++ {
 			b := lineInt % 10
@@ -65,6 +66,6 @@ func (bs *BillingStruct) BillingReader() entities.BillingData {
 			lineInt /= 10
 		}
 	}
-	logger.Logger.Info("Billing sum:", sum)
+	l.Info("Billing sum:", sum)
 	return dataStructs
 }
