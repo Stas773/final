@@ -3,16 +3,17 @@ package incident
 import (
 	"encoding/json"
 	"final/entities"
-	"final/logger"
 	"io"
 	"net/http"
 	"sort"
+
+	"github.com/sirupsen/logrus"
 )
 
 type IncidentStract struct {
 }
 
-func (is *IncidentStract) IncidentReader() ([]entities.IncidentData, error) {
+func (is *IncidentStract) IncidentReader(l *logrus.Logger) ([]entities.IncidentData, error) {
 	var result []entities.IncidentData
 	resp, err := http.Get(incidentURL)
 	if err != nil {
@@ -21,7 +22,7 @@ func (is *IncidentStract) IncidentReader() ([]entities.IncidentData, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		logger.Logger.Error("can't connect, StatusCode:", resp.StatusCode)
+		l.Error("can't connect, StatusCode:", resp.StatusCode)
 		return nil, nil
 	}
 

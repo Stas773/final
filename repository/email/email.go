@@ -3,13 +3,13 @@ package email
 import (
 	"bufio"
 	"final/entities"
-	"final/logger"
 	"os"
 	"sort"
 	"strconv"
 	"strings"
 
 	"github.com/biter777/countries"
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -31,7 +31,7 @@ const (
 type EmailStruct struct {
 }
 
-func (es *EmailStruct) EmailReader() map[string][][]entities.EmailData {
+func (es *EmailStruct) EmailReader(l *logrus.Logger) map[string][][]entities.EmailData {
 	var dataStructs []entities.EmailData
 	var data []string
 	var emailData entities.EmailData
@@ -39,7 +39,7 @@ func (es *EmailStruct) EmailReader() map[string][][]entities.EmailData {
 
 	file, err := os.Open(fileName)
 	if err != nil {
-		logger.Logger.Panic(err)
+		l.Fatal(err)
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
@@ -58,7 +58,7 @@ func (es *EmailStruct) EmailReader() map[string][][]entities.EmailData {
 					case 2:
 						emailData.DeliveryTime, err = strconv.Atoi(v)
 						if err != nil {
-							logger.Logger.Error("can't convert string to int: ", err)
+							l.Error("can't convert string to int: ", err)
 						}
 					}
 				}
