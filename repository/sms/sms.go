@@ -27,7 +27,7 @@ func (ss *SMSStruct) SMSReader(l *logrus.Logger) [][]entities.SMSData {
 
 	file, err := os.Open(fileName)
 	if err != nil {
-		l.Panic(err)
+		l.Fatal(err)
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)

@@ -52,7 +52,7 @@ func main() {
 
 	go func() {
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			Logger.Info("Server don't started", err)
+			Logger.Info("Server didn't start", err)
 			os.Exit(1)
 		}
 	}()
@@ -125,7 +125,6 @@ func NewLogger() *logrus.Logger {
 
 func SMSReader(l *logrus.Logger) [][]entities.SMSData {
 	data := SMSHandler.SMSReader(l)
-	l.Info("SMS file are contain:", data)
 	return data
 }
 
@@ -133,30 +132,27 @@ func MMSReader(l *logrus.Logger) [][]entities.MMSData {
 	data, err := MMSHandler.MMSReader(l)
 	if err != nil {
 		l.Error(err)
+		return nil
 	}
 	if data == nil {
 		l.Warn("MMS data is empty:", data)
 		return nil
 	}
-	l.Info("MMS data are contain:", data)
 	return data
 }
 
 func EmailReader(l *logrus.Logger) map[string][][]entities.EmailData {
 	data := EmailHandler.EmailReader(l)
-	l.Info("Email file are contain:", data)
 	return data
 }
 
 func VoiceReader(l *logrus.Logger) []entities.VoiceData {
 	data := VoiceHandler.VoiceReader(l)
-	l.Info("Voice file are contain:", data)
 	return data
 }
 
 func BillingReader(l *logrus.Logger) entities.BillingData {
 	data := BillingHandler.BillingReader(l)
-	l.Info("Billing file are contain:", data)
 	return data
 }
 
@@ -164,12 +160,12 @@ func SupportReader(l *logrus.Logger) []int {
 	data, err := SupportHandler.SupportReader(l)
 	if err != nil {
 		l.Error(err)
+		return nil
 	}
 	if data == nil {
 		l.Warn("Support data is empty:", data)
 		return nil
 	}
-	l.Info("Support data are contain:", data)
 	return data
 }
 
@@ -177,12 +173,12 @@ func IncidentReader(l *logrus.Logger) []entities.IncidentData {
 	data, err := IncidenrHandler.IncidentReader(l)
 	if err != nil {
 		l.Error(err)
+		return nil
 	}
 	if data == nil {
 		l.Warn("Incident data is empty:", data)
 		return nil
 	}
-	l.Info("Incident data are contain:", data)
 	return data
 }
 

@@ -27,7 +27,7 @@ func (vs *VoiceStruct) VoiceReader(l *logrus.Logger) []entities.VoiceData {
 
 	file, err := os.Open(fileName)
 	if err != nil {
-		l.Panic(err)
+		l.Fatal(err)
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)

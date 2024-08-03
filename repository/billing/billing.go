@@ -19,7 +19,7 @@ func (bs *BillingStruct) BillingReader(l *logrus.Logger) entities.BillingData {
 
 	file, err := os.Open(fileName)
 	if err != nil {
-		l.Panic(err)
+		l.Fatal(err)
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)

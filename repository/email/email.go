@@ -39,7 +39,7 @@ func (es *EmailStruct) EmailReader(l *logrus.Logger) map[string][][]entities.Ema
 
 	file, err := os.Open(fileName)
 	if err != nil {
-		l.Panic(err)
+		l.Fatal(err)
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
