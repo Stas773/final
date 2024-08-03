@@ -3,16 +3,17 @@ package support
 import (
 	"encoding/json"
 	"final/entities"
-	"final/logger"
 	"io"
 	"math"
 	"net/http"
+
+	"github.com/sirupsen/logrus"
 )
 
 type SupportStract struct {
 }
 
-func (ms *SupportStract) SupportReader() ([]int, error) {
+func (ms *SupportStract) SupportReader(l *logrus.Logger) ([]int, error) {
 	var supportData []entities.SupportData
 	resp, err := http.Get(supportURL)
 	if err != nil {
@@ -21,7 +22,7 @@ func (ms *SupportStract) SupportReader() ([]int, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		logger.Logger.Error("can't connect, StatusCode:", resp.StatusCode)
+		l.Error("can't connect, StatusCode:", resp.StatusCode)
 		return nil, nil
 	}
 

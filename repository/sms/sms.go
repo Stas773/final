@@ -3,12 +3,12 @@ package sms
 import (
 	"bufio"
 	"final/entities"
-	"final/logger"
 	"os"
 	"sort"
 	"strings"
 
 	"github.com/biter777/countries"
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -20,14 +20,14 @@ const (
 type SMSStruct struct {
 }
 
-func (ss *SMSStruct) SMSReader() [][]entities.SMSData {
+func (ss *SMSStruct) SMSReader(l *logrus.Logger) [][]entities.SMSData {
 	var dataStructs []entities.SMSData
 	var data []string
 	var smsData entities.SMSData
 
 	file, err := os.Open(fileName)
 	if err != nil {
-		logger.Logger.Panic(err)
+		l.Fatal(err)
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
