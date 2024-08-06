@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"final/cmd/models"
+	"final/controller"
 	"final/entities"
 	"final/usecase"
 	"fmt"
@@ -20,13 +21,13 @@ import (
 )
 
 var (
-	SMSHandler      usecase.SMSWork      = &usecase.BuilderStruct{}
-	MMSHandler      usecase.MMSWork      = &usecase.BuilderStruct{}
-	VoiceHandler    usecase.VoiceWork    = &usecase.BuilderStruct{}
-	EmailHandler    usecase.EmailWork    = &usecase.BuilderStruct{}
-	BillingHandler  usecase.BillingWork  = &usecase.BuilderStruct{}
-	SupportHandler  usecase.SupportWork  = &usecase.BuilderStruct{}
-	IncidenrHandler usecase.IncidentWork = &usecase.BuilderStruct{}
+	SMSHandler      usecase.SMSWork      = &controller.Handler{}
+	MMSHandler      usecase.MMSWork      = &controller.Handler{}
+	VoiceHandler    usecase.VoiceWork    = &controller.Handler{}
+	EmailHandler    usecase.EmailWork    = &controller.Handler{}
+	BillingHandler  usecase.BillingWork  = &controller.Handler{}
+	SupportHandler  usecase.SupportWork  = &controller.Handler{}
+	IncidenrHandler usecase.IncidentWork = &controller.Handler{}
 	SMSResult       [][]entities.SMSData
 	MMSResult       [][]entities.MMSData
 	VoiceResult     []entities.VoiceData
