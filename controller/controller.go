@@ -7,71 +7,31 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-var (
-	SMSHandler      usecase.SMSWork      = &usecase.BuilderStruct{}
-	MMSHandler      usecase.MMSWork      = &usecase.BuilderStruct{}
-	VoiceHandler    usecase.VoiceWork    = &usecase.BuilderStruct{}
-	EmailHandler    usecase.EmailWork    = &usecase.BuilderStruct{}
-	BillingHandler  usecase.BillingWork  = &usecase.BuilderStruct{}
-	SupportHandler  usecase.SupportWork  = &usecase.BuilderStruct{}
-	IncidenrHandler usecase.IncidentWork = &usecase.BuilderStruct{}
-)
-
-func SMSReader(l *logrus.Logger) [][]entities.SMSData {
-	data := SMSHandler.SMSReader(l)
-	return data
+type Handler struct {
+	usecase usecase.BuilderStruct
 }
 
-func MMSReader(l *logrus.Logger) [][]entities.MMSData {
-	data, err := MMSHandler.MMSReader(l)
-	if err != nil {
-		l.Error(err)
-		return nil
-	}
-	if data == nil {
-		l.Warn("MMS data is empty:", data)
-		return nil
-	}
-	return data
+func (h *Handler) SMSReader(l *logrus.Logger) [][]entities.SMSData {
+	return h.usecase.SMSReader(l)
 }
-
-func EmailReader(l *logrus.Logger) map[string][][]entities.EmailData {
-	data := EmailHandler.EmailReader(l)
-	return data
+func (h *Handler) MMSReader(l *logrus.Logger) ([][]entities.MMSData, error) {
+	return h.usecase.MMSReader(l)
 }
-
-func VoiceReader(l *logrus.Logger) []entities.VoiceData {
-	data := VoiceHandler.VoiceReader(l)
-	return data
+func (h *Handler) VoiceReader(l *logrus.Logger) []entities.VoiceData {
+	return h.usecase.VoiceReader(l)
 }
-
-func BillingReader(l *logrus.Logger) entities.BillingData {
-	data := BillingHandler.BillingReader(l)
-	return data
+func (h *Handler) EmailReader(l *logrus.Logger) map[string][][]entities.EmailData {
+	return h.usecase.EmailReader(l)
 }
-
-func SupportReader(l *logrus.Logger) []int {
-	data, err := SupportHandler.SupportReader(l)
-	if err != nil {
-		l.Error(err)
-		return nil
-	}
-	if data == nil {
-		l.Warn("Support data is empty:", data)
-		return nil
-	}
-	return data
+func (h *Handler) BillingReader(l *logrus.Logger) entities.BillingData {
+	return h.usecase.BillingReader(l)
 }
-
-func IncidentReader(l *logrus.Logger) []entities.IncidentData {
-	data, err := IncidenrHandler.IncidentReader(l)
-	if err != nil {
-		l.Error(err)
-		return nil
-	}
-	if data == nil {
-		l.Warn("Incident data is empty:", data)
-		return nil
-	}
-	return data
+func (h *Handler) SupportReader(l *logrus.Logger) ([]int, error) {
+	return h.usecase.SupportReader(l)
+}
+func (h *Handler) IncidentReader(l *logrus.Logger) ([]entities.IncidentData, error) {
+	return h.usecase.IncidentReader(l)
+}
+func (h *Handler) ResultReader(l *logrus.Logger) (string, error) {
+	return h.usecase.ResultReader(l)
 }

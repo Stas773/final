@@ -6,6 +6,7 @@ import (
 	"final/cmd/models"
 	"final/controller"
 	"final/entities"
+	"final/usecase"
 	"fmt"
 	"net/http"
 	"os"
@@ -20,16 +21,23 @@ import (
 )
 
 var (
-	SMSResult      [][]entities.SMSData
-	MMSResult      [][]entities.MMSData
-	VoiceResult    []entities.VoiceData
-	EmailResult    map[string][][]entities.EmailData
-	BillingResult  entities.BillingData
-	SupportResult  []int
-	IncidentResult []entities.IncidentData
-	ResultAll      []byte
-	wg             sync.WaitGroup
-	Logger         *logrus.Logger
+	SMSHandler      usecase.SMSWork      = &controller.Handler{}
+	MMSHandler      usecase.MMSWork      = &controller.Handler{}
+	VoiceHandler    usecase.VoiceWork    = &controller.Handler{}
+	EmailHandler    usecase.EmailWork    = &controller.Handler{}
+	BillingHandler  usecase.BillingWork  = &controller.Handler{}
+	SupportHandler  usecase.SupportWork  = &controller.Handler{}
+	IncidenrHandler usecase.IncidentWork = &controller.Handler{}
+	SMSResult       [][]entities.SMSData
+	MMSResult       [][]entities.MMSData
+	VoiceResult     []entities.VoiceData
+	EmailResult     map[string][][]entities.EmailData
+	BillingResult   entities.BillingData
+	SupportResult   []int
+	IncidentResult  []entities.IncidentData
+	ResultAll       []byte
+	wg              sync.WaitGroup
+	Logger          *logrus.Logger
 )
 
 func main() {
@@ -56,31 +64,31 @@ func main() {
 			wg.Add(7)
 			go func() {
 				defer wg.Done()
-				SMSResult = controller.SMSReader(Logger)
+				SMSResult = SMSReader(Logger)
 			}()
 			go func() {
 				defer wg.Done()
-				MMSResult = controller.MMSReader(Logger)
+				MMSResult = MMSReader(Logger)
 			}()
 			go func() {
 				defer wg.Done()
-				VoiceResult = controller.VoiceReader(Logger)
+				VoiceResult = VoiceReader(Logger)
 			}()
 			go func() {
 				defer wg.Done()
-				EmailResult = controller.EmailReader(Logger)
+				EmailResult = EmailReader(Logger)
 			}()
 			go func() {
 				defer wg.Done()
-				BillingResult = controller.BillingReader(Logger)
+				BillingResult = BillingReader(Logger)
 			}()
 			go func() {
 				defer wg.Done()
-				SupportResult = controller.SupportReader(Logger)
+				SupportResult = SupportReader(Logger)
 			}()
 			go func() {
 				defer wg.Done()
-				IncidentResult = controller.IncidentReader(Logger)
+				IncidentResult = IncidentReader(Logger)
 			}()
 			wg.Wait()
 			ResultAll = ResultReader()
@@ -114,6 +122,65 @@ func NewLogger() *logrus.Logger {
 		FullTimestamp:   true,
 	})
 	return Logger
+}
+
+func SMSReader(l *logrus.Logger) [][]entities.SMSData {
+	data := SMSHandler.SMSReader(l)
+	return data
+}
+
+func MMSReader(l *logrus.Logger) [][]entities.MMSData {
+	data, err := MMSHandler.MMSReader(l)
+	if err != nil {
+		l.Error(err)
+		return nil
+	}
+	if data == nil {
+		l.Warn("MMS data is empty:", data)
+		return nil
+	}
+	return data
+}
+
+func EmailReader(l *logrus.Logger) map[string][][]entities.EmailData {
+	data := EmailHandler.EmailReader(l)
+	return data
+}
+
+func VoiceReader(l *logrus.Logger) []entities.VoiceData {
+	data := VoiceHandler.VoiceReader(l)
+	return data
+}
+
+func BillingReader(l *logrus.Logger) entities.BillingData {
+	data := BillingHandler.BillingReader(l)
+	return data
+}
+
+func SupportReader(l *logrus.Logger) []int {
+	data, err := SupportHandler.SupportReader(l)
+	if err != nil {
+		l.Error(err)
+		return nil
+	}
+	if data == nil {
+		l.Warn("Support data is empty:", data)
+		return nil
+	}
+	return data
+}
+
+func IncidentReader(l *logrus.Logger) []entities.IncidentData {
+	data, err := IncidenrHandler.IncidentReader(l)
+	if err != nil {
+		l.Error(err)
+		return nil
+	}
+	if data == nil {
+		l.Warn("Incident data is empty:", data)
+		return nil
+	}
+	return data
 }
 
 func HandleConnection(w http.ResponseWriter, r *http.Request) {
