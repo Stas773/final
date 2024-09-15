@@ -4,8 +4,14 @@ import (
 	"context"
 	"encoding/json"
 	"final/cmd/models"
-	"final/controller"
 	"final/entities"
+	"final/repository/billing"
+	"final/repository/email"
+	"final/repository/incident"
+	"final/repository/mms"
+	"final/repository/sms"
+	"final/repository/support"
+	"final/repository/voice"
 	"final/usecase"
 	"fmt"
 	"net/http"
@@ -21,13 +27,13 @@ import (
 )
 
 var (
-	SMSHandler      usecase.SMSWork      = &controller.Handler{}
-	MMSHandler      usecase.MMSWork      = &controller.Handler{}
-	VoiceHandler    usecase.VoiceWork    = &controller.Handler{}
-	EmailHandler    usecase.EmailWork    = &controller.Handler{}
-	BillingHandler  usecase.BillingWork  = &controller.Handler{}
-	SupportHandler  usecase.SupportWork  = &controller.Handler{}
-	IncidenrHandler usecase.IncidentWork = &controller.Handler{}
+	SMSHandler      usecase.SMSWork      = &sms.SMSStruct{}
+	MMSHandler      usecase.MMSWork      = &mms.MMSStract{}
+	VoiceHandler    usecase.VoiceWork    = &voice.VoiceStruct{}
+	EmailHandler    usecase.EmailWork    = &email.EmailStruct{}
+	BillingHandler  usecase.BillingWork  = &billing.BillingStruct{}
+	SupportHandler  usecase.SupportWork  = &support.SupportStract{}
+	IncidentHandler usecase.IncidentWork = &incident.IncidentStract{}
 	SMSResult       [][]entities.SMSData
 	MMSResult       [][]entities.MMSData
 	VoiceResult     []entities.VoiceData
@@ -171,7 +177,7 @@ func SupportReader(l *logrus.Logger) []int {
 }
 
 func IncidentReader(l *logrus.Logger) []entities.IncidentData {
-	data, err := IncidenrHandler.IncidentReader(l)
+	data, err := IncidentHandler.IncidentReader(l)
 	if err != nil {
 		l.Error(err)
 		return nil
